@@ -3,15 +3,15 @@ const cors = require('cors');
 const {fetcher} = require('./fetcher.js');
 const PORT = process.env.PORT || 4010;
 
-// const origin_url = 'https://link-checker-b7980.web.app';
+const origin_url = 'https://link-checker-b7980.web.app';
 
-// const corsOptions = {
-//     origin: origin_url,
-//     optionsSuccessStatus: 200
-// }
+const corsOptions = {
+    origin: origin_url,
+    optionsSuccessStatus: 200
+}
 
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post('/', (req, res) => {
