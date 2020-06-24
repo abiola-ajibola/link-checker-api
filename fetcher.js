@@ -1,35 +1,43 @@
 const puppeteer = require('puppeteer-core');
 
 const findImg = async (p) => {
-    const [m1] = await p.$x('//link[@rel="icon"]');
-    const [m2] = await p.$x('/html/head/meta[@itemprop="image"]');
+    try {
+    const [m1] = await p.$x('//link[@rel="shortcut icon"]');
+    const m2 = await p.$x('/html/head/meta[@content]');
+
     if (m1) {
         const hr = await m1.getProperty('href');
         var href = await hr.jsonValue();
     } else if (m2) {
-        const hr = await m2.getProperty('content');
-        var href = await hr.jsonValue();
+        const metaTags = await p.$$eval('head > [content]', x => x.map(tagz => tagz.getAttribute('content')));
+        console.log('metas: ', metaTags);
+        const ref = metaTags.filter(x => x.endsWith('.jpg') || x.endsWith('.jpeg') || x.endsWith('.ico') || x.endsWith('.png') || x.endsWith('.gif'))
+        href = ref[0];
     } else {
         var href = 'no image';
     }
+    console.log('href :', href);
     return href;
+    } catch(err) {
+        console.log(err);
+        return 'Server error!'
+    }
 }
 
 const fetcher = async (url) => {
+    try {
     const browser = await puppeteer.launch({
-        headless: true,
-        executablePath: "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe"
+        // The executable path is for running puppeteer locally with edge dev browser
+        // executablePath: "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe",
+        args: ['--no-sandbox']
     });
     const page = await browser.newPage();
     await page.goto(url);
-    // await page.waitForNavigation({ waitUntil: 'networkidle2' })
     const href = await findImg(page);
 
     const title = await page.$eval('head>title', el => el.innerHTML);
-    // img1 = await img1.jsonValue();
-    // img2 = await img2.jsonValue();
-    // const img = img1 || img2;
-    console.log(title, href);
+    const pageHost = await page.evaluate(() => document.location.href);
+    console.log(pageHost);
 
     await browser.close();
     if (href.includes('http')) {
@@ -38,9 +46,18 @@ const fetcher = async (url) => {
             url: href
         }
     }
+    if (href === 'Server error!' ) {
+        return {
+            title: href,
+            url: href
+        }
+    }
     return {
         title: title,
-        url: `${url}${href}`
+        url: `${pageHost}${href}`
+    }
+    } catch (err) {
+        console.log(err);
     }
 }
 
