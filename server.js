@@ -22,7 +22,6 @@ app.post('/', (req, res) => {
     fetcher(req.body.url).then((resolve) => {
         console.log(resolve)
         res.status(200).json(resolve);
-        process.exit(0);
     })
     .catch ((err) => {
         res.status(500).send('Server error!')
