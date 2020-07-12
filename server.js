@@ -5,7 +5,7 @@ const {fetcher} = require('./fetcher.js');
 // dotenv.config();
 const PORT = process.env.PORT;
 
-const origin_url = 'https://link-checker-react.netlify.app/';
+const origin_url = 'https://link-checker-react.netlify.app';
 // const origin_url = "http://localhost:3000";
 
 const corsOptions = {
