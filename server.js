@@ -6,6 +6,7 @@ const {fetcher} = require('./fetcher.js');
 const PORT = process.env.PORT;
 
 const origin_url = 'https://link-checker-react.netlify.app';
+// const origin_url = "http://localhost:3000";
 
 const corsOptions = {
     origin: origin_url,
@@ -28,6 +29,5 @@ app.post('/', (req, res) => {
         process.exit(1);
     })
 })
-
 
 app.listen(PORT, () => console.log(`API listening on port: ${PORT}`));

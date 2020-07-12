@@ -1,5 +1,5 @@
-// const puppeteer = require('puppeteer-core');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+// const puppeteer = require('puppeteer');
 
 const findImg = async (p) => {
     try {
@@ -29,7 +29,7 @@ const fetcher = async (url) => {
     const browser = await puppeteer.launch({
         headless: true,
         // The executable path is for running puppeteer locally with edge dev browser
-        // executablePath: "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe",
+        executablePath: "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe",
         args: ['--no-sandbox']
     });
     try {
