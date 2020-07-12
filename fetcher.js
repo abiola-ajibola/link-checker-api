@@ -33,15 +33,12 @@ const fetcher = async (url) => {
         args: ['--no-sandbox']
     });
     try {
-       
         const page = await browser.newPage();
         await page.goto(url,{waitUntil: 'domcontentloaded'});
         const href = await findImg(page);
-
         const title = await page.$eval('head>title', el => el.innerHTML);
         const pageHost = await page.evaluate(() => document.location.href);
         console.log(pageHost);
-
         await browser.close();
         if (href.includes('http')) {
             return {
