@@ -13,8 +13,8 @@ const corsOptions = {
     optionsSuccessStatus: 200
 }
 
-const app = express();
-app.use(cors(corsOptions));
+const app = express(corsOptions);
+app.use(cors());
 app.use(express.json());
 
 app.post('/', (req, res) => {
